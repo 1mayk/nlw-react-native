@@ -25,5 +25,5 @@ export function Header({ title }: HeaderProps) {
         <Feather name="shopping-bag" color={colors.white} size={24} />
       </TouchableOpacity>
     </View>
-  );
+  ); 
 }
