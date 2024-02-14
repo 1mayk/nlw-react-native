@@ -4,9 +4,11 @@ import colors from "tailwindcss/colors";
 
 type HeaderProps = {
   title: string;
+  cartQuantityItems?: number;
 };
 
-export function Header({ title }: HeaderProps) {
+// Faço um set padrão aqui no valor para não considerar como indefinido depois
+export function Header({ title, cartQuantityItems = 0 }: HeaderProps) {
   return (
     // Por algum motivo, ao retirar o flex-row o conteúdo some, por que?
     <View className="flex-row items-center border-b border-slate-700 pb-5 mx-5">
@@ -17,13 +19,17 @@ export function Header({ title }: HeaderProps) {
       </View>
 
       {/* CARRINHO */}
-      <TouchableOpacity>
-        <View className="bg-lime-300 w-4 h-4 rounded-full items-center justify-center">
-          <Text className="text-slate-900 font-bold text-xs">1</Text>
-        </View>
+      {cartQuantityItems > 0 && (
+        <TouchableOpacity className="relative">
+          <View className="bg-lime-300 w-4 h-4 rounded-full items-center justify-center top-2 z-10 -right-3.5">
+            <Text className="text-slate-900 font-bold text-xs">
+              {cartQuantityItems}
+            </Text>
+          </View>
 
-        <Feather name="shopping-bag" color={colors.white} size={24} />
-      </TouchableOpacity>
+          <Feather name="shopping-bag" color={colors.white} size={24} />
+        </TouchableOpacity>
+      )}
     </View>
-  ); 
+  );
 }
