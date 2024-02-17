@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { View, FlatList, SectionList, Text } from "react-native";
 import { Header } from "@/components/header";
 import { CategoryButton } from "@/components/category-button";
@@ -7,9 +7,26 @@ import { CATEGORIES, MENU } from "@/utils/data/products";
 
 export default function Home() {
   const [category, setCategory] = useState<string>(CATEGORIES[0]);
+  const sectionListRef = useRef<SectionList>(null);
 
-  const handleCategorySelected = (item: string) => {
-    setCategory(item);
+  // Função chamada quando clico em um item categoria da flatlist
+  const handleCategorySelected = (selectedCategory: string) => {
+    setCategory(selectedCategory);
+
+    // Pego o index da categoria selecionada
+    // Isso é um array de strings, com nome de cada categoria
+    // traz o index da posição onde a categoria for igual à selecionada
+    const sectionIndex = CATEGORIES.findIndex(
+      (category) => category === selectedCategory
+    );
+
+    if (sectionListRef.current) {
+      sectionListRef.current.scrollToLocation({
+        animated: true,
+        sectionIndex,
+        itemIndex: 0,
+      });
+    }
   };
 
   return (
@@ -33,6 +50,7 @@ export default function Home() {
       />
 
       <SectionList
+        ref={sectionListRef}
         sections={MENU}
         keyExtractor={(item) => item.id}
         stickySectionHeadersEnabled={false}
