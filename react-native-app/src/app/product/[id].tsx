@@ -1,9 +1,11 @@
 import { View, Text, Image } from "react-native";
 import { useLocalSearchParams, Link } from "expo-router";
+import { Feather } from "@expo/vector-icons";
 
 import { PRODUCTS } from "@/utils/data/products";
 import { formatCurrency } from "@/utils/functions/format-currency";
 import { Button } from "@/components/button";
+import LinkButton from "@/components/link-button";
 
 export default function Product() {
   const { id } = useLocalSearchParams();
@@ -12,13 +14,15 @@ export default function Product() {
 
   return (
     <View className="flex-1">
+      {/* Cover */}
       <Image
         source={product.cover}
         className="w-full h-52"
         resizeMode="cover"
       />
 
-      <View className="p-5 mt-8 flex-1">
+      {/* Price + Description + Ingredients */}
+      <View className="p-5 mt-8 flex-1  bg-red-600">
         <Text className="text-lime-400 text-2xl font-heading my-2">
           {formatCurrency(product.price)}
         </Text>
@@ -38,9 +42,17 @@ export default function Product() {
         ))}
       </View>
 
-      <Link href={`/`}>
-        <Text className="text-2xl text-white font-heading">Voltar</Text>
-      </Link>
+      {/* Botao */}
+      <View className="p-5 pb-8 gap-5">
+        <Button>
+          <Button.Icon>
+            <Feather name="plus-circle" size={20} />
+          </Button.Icon>
+          <Button.Text>Adicionar ao pedido</Button.Text>
+        </Button>
+
+        <LinkButton title="Voltar ao cardápio" href="/" />
+      </View>
     </View>
   );
 }
