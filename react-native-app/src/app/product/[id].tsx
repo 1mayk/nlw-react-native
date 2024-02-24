@@ -2,15 +2,22 @@ import { View, Text, Image, ScrollView } from "react-native";
 import { useLocalSearchParams, Link } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 
+import { useCartStore } from "@/stores/cart-store";
+
 import { PRODUCTS } from "@/utils/data/products";
 import { formatCurrency } from "@/utils/functions/format-currency";
 import { Button } from "@/components/button";
 import LinkButton from "@/components/link-button";
 
 export default function Product() {
+  const cartStore = useCartStore();
   const { id } = useLocalSearchParams();
 
   const product = PRODUCTS.filter((item) => item.id === id)[0];
+
+  function handleAddCart() {
+    cartStore.add(product);
+  }
 
   return (
     <ScrollView showsVerticalScrollIndicator={false}>
@@ -45,7 +52,7 @@ export default function Product() {
 
         {/* Botao */}
         <View className="p-5 pb-8 gap-5">
-          <Button>
+          <Button onPress={handleAddCart}>
             <Button.Icon>
               <Feather name="plus-circle" size={20} />
             </Button.Icon>
