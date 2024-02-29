@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { View, Text, ScrollView, Alert } from "react-native";
+import { useNavigation } from "expo-router";
 import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 
 import { Header } from "@/components/header";
@@ -15,6 +16,7 @@ import LinkButton from "@/components/link-button";
 export default function Cart() {
   const [address, setAddress] = useState("");
   const cartStore = useCartStore();
+  const navigation = useNavigation();
 
   const total = formatCurrency(
     cartStore.products.reduce(
@@ -53,7 +55,10 @@ export default function Cart() {
     \n Valor Total: ${total}
     `;
 
-    // console.log(message);
+    console.log(message);
+
+    cartStore.clear();
+    navigation.goBack();
   }
 
   return (
@@ -90,6 +95,10 @@ export default function Cart() {
             <Input
               placeholder="Informe o endereço de entrega com a rua, bairro, CEP, número e complemento..."
               onChangeText={setAddress}
+              // Mudando para enviar ao clicar no enter do teclado
+              blurOnSubmit={true}
+              onSubmitEditing={handleOrder}
+              returnKeyType="next"
             />
           </View>
         </ScrollView>
